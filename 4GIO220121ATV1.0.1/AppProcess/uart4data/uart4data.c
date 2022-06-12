@@ -713,14 +713,17 @@ void DTU_Send(void)//发送IO数据+模拟量数据
 	   sprintf(TimeBuf,"%d",TIM3_CAPTURE_VAL1);
 		 cJSON_AddItemToObject(root,"TIM1_CAPTURE_VAL1",cJSON_CreateString(TimeBuf));  //定时器3通道1计数		 
 			
+	   if(AD1_Type!=0){
 		 cJSON_AddItemToObject(root,"adc1",cJSON_CreateNumber(adc1)); 
 		 cJSON_AddItemToObject(root,"AD1_EValue",cJSON_CreateNumber(AD1_Value));      //工程量
 		 cJSON_AddItemToObject(root,"AD1_PhyValue",cJSON_CreateNumber(AD1_PhyValue)); //物理量  		
-		
+		 }
+		 
+		 if(AD2_Type!=0){
 		 cJSON_AddItemToObject(root,"adc2",cJSON_CreateNumber(adc2)); 
 		 cJSON_AddItemToObject(root,"AD2_EValue",cJSON_CreateNumber(AD2_Value)); 
 		 cJSON_AddItemToObject(root,"AD2_PhyValue",cJSON_CreateNumber(AD2_PhyValue)); 		 
-
+		 }
      name=cJSON_PrintUnformatted(root);
      MainLen = sprintf((char*)MainBuffer,"%s",name);			
 		 mqtt_publish(&mymqtt,MQTTPublishTopic,MainBuffer,MainLen, 0, 0,PublishedCb);//发布消息
